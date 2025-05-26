@@ -1,25 +1,13 @@
-name: Deploy
+name: Deploy Frontend
 on: push
-
 jobs:
-  deploy-frontend:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
-      - run: cd frontend && npm install && npm run build && npm run export
+      - run: npm install && npm run build && npm run export
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/out
-
-  deploy-backend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
-      - run: cd backend && deno cache app.ts
-      - uses: supabase/setup-cli@v1
-        with:
-          supabase-url: ${{ secrets.SUPABASE_URL }}
-          supabase-key: ${{ secrets.SUPABASE_KEY }}
+          publish_dir: ./out
